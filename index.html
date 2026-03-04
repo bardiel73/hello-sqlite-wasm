@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <input id="user_input" placeholder="msg INSERT into db.tbl" autofocus>
+    <button id="clear_db_button">clear db</button>
+    <div id="db_contents"></div>
+</body>
+<script>
+
+    const message_types = Object.freeze({
+        MAIN_ENTER_TEXT: 0,
+        MAIN_CLEAR_DB: 1,
+        WORKER_DB_CONTENTS: 2,
+    });
+
+    const worker = new Worker('my-sqlite-worker.js');
+
+    user_input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && user_input.value) {
+        worker.postMessage({type: message_types.MAIN_ENTER_TEXT, payload: user_input.value});
+        user_input.value = '';
+        }
+    });
+
+    clear_db_button.addEventListener('click', e => {
+        worker.postMessage({type: message_types.MAIN_CLEAR_DB, payload: 0});
+    })
+
+    worker.onmessage = e => {
+        switch(e.data.type)
+        {
+            case message_types.WORKER_DB_CONTENTS:
+            {
+                let htmlstr = "";
+                for (row of e.data.payload) {
+                    console.log(row);
+                    htmlstr += `${row}<br>`;
+                }
+                db_contents.innerHTML = htmlstr;
+            } break;
+        }
+    };
+
+</script>
