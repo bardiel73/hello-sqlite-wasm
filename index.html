@@ -8,10 +8,26 @@
 <script src="coi-serviceworker.js"></script> <!-- COOP/COEP hack to serve wasm through GH Pages, https://github.com/gzuidhof/coi-serviceworker -->
 
 <body>
-    <input id="user_input" placeholder="msg INSERT into db.tbl" autofocus>
-    <button id="clear_db_button">clear db</button>
+    <div id="horizontal-plz">
+        <input id="user_input" placeholder="msg INSERT into db.tbl" autofocus>
+        <button id="clear_db_button">clear db</button>
+        <div id="coop_coep"></div>
+    </div>
+
     <div id="db_contents"></div>
 </body>
+
+<style>
+#horizontal-plz {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+</style>
+
+<script>
+     coop_coep.innerHTML = `Cross origin isolated? ${window.crossOriginIsolated ? "[YES, all set.]" : "[NO, try refreshing.]"}`
+</script>
 
 <script>
 
