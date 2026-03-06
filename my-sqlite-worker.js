@@ -32,12 +32,12 @@ sqlite3InitModule().then(sqlite3 => {
         case message_types.MAIN_ENTER_TEXT:
             {
                 sqlog(`message '${e.data.payload}' received...`);
-                console.log(e);
+                // console.log(e);
                 db.exec({ sql: 'INSERT INTO entries (text) VALUES (?)', bind: [e.data.payload] });
                 sqlog(`message '${e.data.payload}' inserted...`);
 
                 const rows = db.exec('SELECT * FROM entries', { returnValue: 'resultRows' });
-                sqlog("current db: ", rows);
+                // sqlog("current db: ", rows);
                 send_db_to_main();
 
             } break;
@@ -46,8 +46,8 @@ sqlite3InitModule().then(sqlite3 => {
             {
                 sqlog("MAIN_CLEAR_DB msg received...");
                 db.exec({ sql: 'DELETE FROM entries' });
-                const rows = db.exec('SELECT * FROM entries', { returnValue: 'resultRows' });
-                sqlog("current db: ", rows);
+                // const rows = db.exec('SELECT * FROM entries', { returnValue: 'resultRows' });
+                // sqlog("current db: ", rows);
                 send_db_to_main();
             } break;
         } // switch(e.data.type)
